@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            font-family: 'Tahoma', sans-serif;
+            color: #000;
+            background-color: #ECE9D8;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .window-content {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            background-color: #ECE9D8;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: linear-gradient(to bottom, #7BA2E7 0%, #5885D2 100%);
+            border-bottom: 1px solid #3469C5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            min-height: 50px;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 16px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            overflow: auto;
+            background-color: #ECE9D8;
+            padding: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Windows XP style scrollbars - Add this to the style section */
+        .content-wrapper::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+
+        .content-wrapper::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #DEDEDE;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #CFCFCF, #EFEFEF);
+            border: 1px solid #AAAAAA;
+            border-radius: 2px;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #C0C0C0, #DDDDDD);
+        }
+
+        .content-wrapper::-webkit-scrollbar-corner {
+            background: #F1F1F1;
+        }
+        
+        .content {
+            line-height: 1.6;
+            font-size: 12px;
+            padding: 15px 20px;
+            background-color: white;
+            border: 1px solid #D8D2BD;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #E3E3E3;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        h2 {
+            color: #003399;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #C5D8F1;
+        }
+        
+        p {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        ul.values-list {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        ul.values-list li {
+            position: relative;
+            padding: 8px 10px 8px 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(to bottom, #F9F9F9 0%, #F3F3F3 100%);
+            border: 1px solid #E5E5E5;
+            border-radius: 3px;
+            transition: background 0.2s ease;
+        }
+        
+        ul.values-list li:hover {
+            background: linear-gradient(to bottom, #EBF4FD 0%, #DCE9FB 100%);
+            border-color: #B8D6FB;
+        }
+        
+        ul.values-list li:before {
+            content: "•";
+            position: absolute;
+            left: 12px;
+            color: #003399;
+            font-weight: bold;
+        }
+        
+        .value-title {
+            font-weight: bold;
+            color: #003399;
+        }
+        
+        .status-bar {
+            background-color: #ECE9D8;
+            border-top: 1px solid #a0a0a0;
+            padding: 2px 10px;
+            font-size: 11px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        @media (max-width: 900px) {
+            .content {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h2 {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+            
+            .content {
+                padding: 15px;
+                font-size: 13px;
+            }
+            
+            ul.values-list li {
+                padding: 8px 8px 8px 25px;
+            }
+            
+            ul.values-list li:before {
+                left: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            html, body {
+                height: 100%;
+            }
+            
+            .window-content {
+                height: 100%;
+            }
+            
+            .header {
+                padding: 6px 10px;
+                min-height: 40px;
+            }
+            
+            .header h1 {
+                font-size: 14px;
+            }
+            
+            .content-wrapper {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 12px;
+            }
+            
+            .section {
+                margin-bottom: 15px;
+                padding-bottom: 12px;
+            }
+            
+            .status-bar {
+                font-size: 10px;
+            }
+            
+            ul.values-list {
+                padding-left: 5px;
+            }
+            
+            ul.values-list li {
+                padding: 6px 8px 6px 22px;
+                margin-bottom: 6px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 13px;
+            }
+            
+            .content {
+                padding: 10px;
+            }
+            
+            h2 {
+                font-size: 13px;
+            }
+            
+            p {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="window-content">
+        <div class="header">
+            <h1>About Me</h1>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="section">
+                    <h2>Hello, I'm Nikhil Urranki</h2>
+                    <p>Welcome! I'm a recent graduate, eager to start my career as a developer. I'm passionate about building useful and interesting digital things.</p>
+                    <p>I'm currently looking for opportunities where I can use my skills to create great software and learn from experienced teams.</p>
+                </div>
+                
+                <div class="section">
+                    <h2>My Experience So Far</h2>
+                    <p>During my studies, I didn't just hit the books – I built stuff! I completed over 10+ personal projects, diving deep into the practical side of development.</p>
+                    <p>This hands-on work gave me experience in web development, mobile app creation, and even exploring the world of AI. I enjoy tackling challenges and turning ideas into working code.</p>
+                </div>
+                
+                <div class="section">
+                    <h2>My Coding Philosophy (Kind Of)</h2>
+                    <ul class="values-list">
+                        <li><span class="value-title">Build Awesome Things:</span> If it doesn't make you go "Neat!", is it even worth it? Aiming for the cool factor.</li>
+                        <li><span class="value-title">Bug Hunter Extraordinaire:</span> Tracking down tricky bugs feels like solving a mystery. Sometimes I feel like a detective, other times... well, the bug puts up a good fight!</li>
+                        <li><span class="value-title">Learn All the Things!:</span> My brain is like a sponge, but for code snippets and tech buzzwords. Always upgrading!</li>
+                        <li><span class="value-title">Teamwork Makes the Dream Work:</span> More people means more ideas, more snacks, and someone else to blame when the build breaks (kidding... mostly).</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h2>When the Keyboard Cools Down</h2>
+                    <p>Okay, when I'm not coding, you might find me strategically planning my next attack in Clash of Clans (my base is *Nikhil The*), searching for the perfect playlist to code to, or maybe just staring into the void while my brain compiles its thoughts. It's all part of the ~magic~.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <span>Nikhil Urranki - Developer Profile</span>
+            <span>Status: Ready for Hire!</span>
+        </div>
+    </div>
+</body>
+</html>

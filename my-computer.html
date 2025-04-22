@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Explorer</title>
+    <!-- Add Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Enhanced Portfolio Explorer styles */
+        .window-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 30px); /* Adjust based on window header height */
+            overflow: hidden;
+            background-color: #ECE9D8; /* XP background */
+        }
+
+        .address-bar {
+            display: flex;
+            align-items: center;
+            padding: 3px 5px; /* Slightly reduced padding */
+            background: linear-gradient(to bottom, #ffffff 0%, #f1f1f1 100%);
+            border-bottom: 1px solid #a0a0a0;
+            height: 28px; /* Fixed height */
+        }
+
+        .address-bar .label {
+            margin-right: 5px;
+            font-size: 11px;
+            color: #666; /* XP address label color */
+        }
+
+        .address-field {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #7F9DB9; /* XP border color */
+            padding: 2px 5px;
+            height: 22px; /* XP address field height */
+        }
+
+        .address-field img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+        
+        .address-field span {
+            font-size: 11px;
+            color: #000;
+        }
+
+        .toolbar {
+            background: linear-gradient(to bottom, #f5f5f5 0%, #e5e5e5 100%);
+            padding: 2px 4px; /* Reduced padding */
+            display: flex;
+            align-items: center; /* Center items vertically */
+            border-bottom: 1px solid #a0a0a0;
+            height: 30px; /* Fixed height */
+        }
+
+        .toolbar-button {
+            display: flex;
+            align-items: center;
+            padding: 1px 6px; /* Adjusted padding */
+            margin-right: 2px; /* Reduced margin */
+            border: 1px solid transparent;
+            border-radius: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            height: 24px; /* Fixed height */
+        }
+
+        .toolbar-button:hover {
+            border: 1px solid #AECFF7;
+            background: linear-gradient(to bottom, #EEF3FA 0%, #DCEBFC 100%);
+            box-shadow: 0 0 3px rgba(77, 144, 254, 0.3);
+        }
+
+        .toolbar-button img {
+            width: 20px; /* Slightly smaller icons */
+            height: 20px;
+            margin-right: 4px; /* Reduced margin */
+        }
+
+        .toolbar-separator {
+            height: 22px; /* Adjusted height */
+            width: 1px;
+            background-color: #c0c0c0; /* Lighter separator */
+            margin: 0 6px; /* Adjusted margin */
+        }
+
+        .explorer-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 180px; /* Slightly narrower default */
+            background-color: #ECE9D8;
+            border-right: 1px solid #a0a0a0;
+            padding: 8px 0; /* Adjusted padding */
+            overflow-y: auto; /* Allow sidebar scrolling if needed */
+        }
+
+        .sidebar-header {
+            padding: 4px 8px 6px 8px; /* Adjusted padding */
+            font-weight: bold;
+            color: #003399;
+            font-size: 11px; /* XP font size */
+            border-bottom: 1px solid #d4d0c8; /* XP style separator */
+            margin-bottom: 4px; /* Space below header */
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 3px 8px; /* Adjusted padding */
+            cursor: pointer;
+            font-size: 11px;
+            transition: background-color 0.1s; /* Faster transition */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-item:hover {
+            background-color: #CCE8FF;
+            color: #003399;
+        }
+        
+        .sidebar-item.active { /* Style for selected item if needed */
+             background-color: #99CCFF;
+             color: #003399;
+        }
+
+        .sidebar-item img {
+            width: 16px; /* XP standard size */
+            height: 16px;
+            margin-right: 6px; /* Adjusted margin */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 8px; /* Reduced padding */
+            background-color: white;
+            overflow: auto;
+        }
+
+        .drive-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Adjusted min size */
+            grid-gap: 10px; /* Reduced gap */
+            padding: 8px; /* Reduced padding */
+        }
+
+        .drive-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            padding: 4px; /* Reduced padding */
+            border: 1px solid transparent;
+            transition: all 0.1s; /* Faster transition */
+            border-radius: 3px; /* Slight rounding */
+        }
+
+        .drive-item:hover {
+            background-color: #CCE8FF;
+            border: 1px solid #84ACDD;
+            /* Removed box-shadow for closer XP look */
+        }
+        
+        .drive-item.selected { /* Style for selected drive */
+             background-color: #99CCFF;
+             border: 1px solid #5B90CF;
+        }
+
+        .drive-item:active {
+            transform: translateY(0px);
+        }
+
+        .drive-item img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 4px; /* Reduced margin */
+        }
+
+        .drive-name {
+            font-size: 11px;
+            font-weight: normal; /* XP uses normal weight */
+            max-width: 100px;
+            color: #000;
+            line-height: 1.2; /* Adjust line height */
+            word-wrap: break-word; /* Allow wrapping */
+        }
+        
+        .drive-item:hover .drive-name,
+        .drive-item.selected .drive-name {
+             color: #000; /* Ensure name stays black on hover/select */
+        }
+
+        .drive-type {
+            font-size: 10px;
+            color: #666;
+            max-width: 100px;
+            line-height: 1.2;
+        }
+
+        .status-bar {
+            background-color: #ECE9D8;
+            border-top: 1px solid #a0a0a0;
+            padding: 2px 8px; /* Adjusted padding */
+            font-size: 11px;
+            height: 22px; /* XP status bar height */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #000; /* Black text */
+        }
+        
+        /* XP shine effect for icons */
+        .drive-item img {
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2)); /* Softer shadow */
+        }
+
+        /* Add styles for the Font Awesome icons */
+        .fa-icon {
+            width: 16px; /* Match image size */
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 6px; /* Match image margin */
+            font-size: 13px; /* Adjusted size */
+        }
+        
+        .fa-github {
+            color: #333;
+        }
+        
+        .fa-linkedin {
+            color: #0077b5;
+        }
+        
+        .fa-envelope {
+            color: #D44638;
+        }
+
+        /* Windows XP style scrollbars */
+        .main-content::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #DEDEDE;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #CFCFCF, #EFEFEF);
+            border: 1px solid #AAAAAA;
+            border-radius: 2px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #C0C0C0, #DDDDDD);
+        }
+
+        .main-content::-webkit-scrollbar-corner {
+            background: #F1F1F1;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #DEDEDE;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #CFCFCF, #EFEFEF);
+            border: 1px solid #AAAAAA;
+            border-radius: 2px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #C0C0C0, #DDDDDD);
+        }
+
+        .sidebar::-webkit-scrollbar-corner {
+            background: #F1F1F1;
+        }
+
+        /* Additional responsive styles for my-computer page */
+        @media (max-width: 1200px) {
+            .drive-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Adjusted */
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .drive-container {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Adjusted */
+            }
+            
+            .sidebar {
+                width: 160px; /* Narrower */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .explorer-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #a0a0a0;
+                display: flex;
+                flex-wrap: wrap;
+                padding: 4px; /* Reduced padding */
+                overflow-y: hidden; /* Hide scrollbar when horizontal */
+                height: auto; /* Allow height to adjust */
+            }
+            
+            .sidebar-header {
+                width: 100%;
+                border-bottom: none; /* Remove border in horizontal layout */
+                margin-bottom: 2px;
+            }
+            
+            .sidebar-item {
+                padding: 3px 6px;
+                margin: 1px; /* Reduced margin */
+                border-radius: 3px; /* Add rounding */
+            }
+            
+            .drive-container {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Adjusted */
+                grid-gap: 8px;
+            }
+            
+            .drive-item img {
+                 width: 40px;
+                 height: 40px;
+            }
+
+            .drive-name {
+                font-size: 10px;
+            }
+            
+            .drive-type {
+                font-size: 9px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .toolbar {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .drive-container {
+                grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+                grid-gap: 10px;
+            }
+            
+            .address-bar .label {
+                display: none; /* Hide address label */
+            }
+        }
+        
+        /* Maximize view specific adjustments */
+        .maximized .explorer-content {
+            flex-direction: row;
+        }
+        
+        .maximized .sidebar {
+            width: 180px; /* Restore width */
+            flex-direction: column;
+            border-right: 1px solid #a0a0a0;
+            border-bottom: none;
+            height: 100%; /* Ensure full height */
+            overflow-y: auto;
+        }
+        
+        .maximized .drive-container {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Restore grid */
+        }
+    </style>
+    <script>
+        // Add selection logic for drive items
+        document.addEventListener('DOMContentLoaded', function() {
+            const driveItems = document.querySelectorAll('.drive-item');
+            driveItems.forEach(item => {
+                item.addEventListener('click', function(event) {
+                    driveItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Add selection logic for sidebar items
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+             sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Don't select social links visually
+                    if (this.hasAttribute('data-social')) return; 
+                    
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Existing script content...
+            // For sidebar About Me link
+            const aboutMeSidebarItem = document.querySelector('.sidebar-item[data-window="about-window"]');
+            if (aboutMeSidebarItem) {
+                aboutMeSidebarItem.addEventListener('click', function() {
+                    window.parent.postMessage({
+                        action: 'openWindow',
+                        windowId: 'about-window',
+                        title: 'About Me',
+                        contentUrl: 'about.html'
+                    }, '*');
+                });
+            }
+            
+            // For drive icon About Me link
+            const aboutMeDriveItem = document.querySelector('.drive-item[data-window="about-window"]');
+            if (aboutMeDriveItem) {
+                aboutMeDriveItem.addEventListener('click', function() {
+                    if (!this.classList.contains('selected')) {
+                         window.parent.postMessage({
+                            action: 'openWindow',
+                            windowId: 'about-window',
+                            title: 'About Me',
+                            contentUrl: 'about.html'
+                        }, '*');
+                    }
+                });
+            }
+
+            // For Projects sidebar and drive links
+            const projectsSidebarItem = document.querySelector('.sidebar-item[data-window="projects-window"]');
+            const projectsDriveItem = document.querySelector('.drive-item[data-window="projects-window"]');
+
+            if (projectsSidebarItem) {
+                projectsSidebarItem.addEventListener('click', function() {
+                    window.parent.postMessage({
+                        action: 'openWindow',
+                        windowId: 'projects-window',
+                        title: 'My Projects',
+                        contentUrl: 'projects.html'
+                    }, '*');
+                });
+            }
+
+            if (projectsDriveItem) {
+                projectsDriveItem.addEventListener('click', function() {
+                     if (!this.classList.contains('selected')) {
+                        window.parent.postMessage({
+                            action: 'openWindow',
+                            windowId: 'projects-window',
+                            title: 'My Projects',
+                            contentUrl: 'projects.html'
+                        }, '*');
+                    }
+                });
+            }
+            
+            // For Skills sidebar and drive links
+            const skillsSidebarItem = document.querySelector('.sidebar-item[data-window="skills-window"]');
+            const skillsDriveItem = document.querySelector('.drive-item[data-window="skills-window"]');
+            
+            if (skillsSidebarItem) {
+                skillsSidebarItem.addEventListener('click', function() {
+                    window.parent.postMessage({
+                        action: 'openWindow',
+                        windowId: 'skills-window',
+                        title: 'My Skills',
+                        contentUrl: 'skills.html'
+                    }, '*');
+                });
+            }
+            
+            if (skillsDriveItem) {
+                skillsDriveItem.addEventListener('click', function() {
+                     if (!this.classList.contains('selected')) {
+                        window.parent.postMessage({
+                            action: 'openWindow',
+                            windowId: 'skills-window',
+                            title: 'My Skills',
+                            contentUrl: 'skills.html'
+                        }, '*');
+                    }
+                });
+            }
+            
+            // For Network sidebar and drive links
+            const networkSidebarItem = document.querySelector('.sidebar-item[data-window="network-window"]');
+            const networkDriveItem = document.querySelector('.drive-item[data-window="network-window"]');
+            
+            if (networkSidebarItem) {
+                networkSidebarItem.addEventListener('click', function() {
+                    window.parent.postMessage({
+                        action: 'openWindow',
+                        windowId: 'network-window',
+                        title: 'My Network',
+                        contentUrl: 'network.html'
+                    }, '*');
+                });
+            }
+            
+            if (networkDriveItem) {
+                networkDriveItem.addEventListener('click', function() {
+                     if (!this.classList.contains('selected')) {
+                        window.parent.postMessage({
+                            action: 'openWindow',
+                            windowId: 'network-window',
+                            title: 'My Network',
+                            contentUrl: 'network.html'
+                        }, '*');
+                    }
+                });
+            }
+
+            // Adjust layout on load
+            adjustLayout();
+        });
+
+        // Add window resize listener to adjust layout
+        window.addEventListener('resize', function() {
+            adjustLayout();
+        });
+        
+        function adjustLayout() {
+            const explorerContent = document.querySelector('.explorer-content');
+            const sidebar = document.querySelector('.sidebar');
+            const isMaximized = window.parent.document.querySelector('.window.maximized') !== null; // Check if parent window is maximized
+
+            if (!isMaximized && window.innerWidth <= 768) {
+                explorerContent.style.flexDirection = 'column';
+                sidebar.style.width = '100%';
+                sidebar.style.borderRight = 'none';
+                sidebar.style.borderBottom = '1px solid #a0a0a0';
+                sidebar.style.height = 'auto';
+                sidebar.style.overflowY = 'hidden';
+            } else {
+                explorerContent.style.flexDirection = 'row';
+                sidebar.style.width = isMaximized ? '200px' : (window.innerWidth <= 992 ? '160px' : '180px'); 
+                sidebar.style.borderRight = '1px solid #a0a0a0';
+                sidebar.style.borderBottom = 'none';
+                sidebar.style.height = '100%';
+                sidebar.style.overflowY = 'auto';
+            }
+        }
+        
+    </script>
+</head>
+<body>
+    <div class="window-content">
+        <div class="address-bar">
+            <div class="label">Address</div> <!-- Removed colon -->
+            <div class="address-field">
+                <img src="Windows XP Icons/My Computer.png" alt="Portfolio Explorer">
+                <span>Portfolio Explorer</span>
+            </div>
+        </div>
+        
+        <div class="toolbar">
+            <div class="toolbar-button">
+                <img src="Windows XP Icons/back.png" alt="Back">
+                <span>Back</span>
+            </div>
+            <div class="toolbar-button">
+                <img src="Windows XP Icons/forward.png" alt="Forward">
+                <span>Forward</span>
+            </div>
+        </div>
+        
+        <div class="explorer-content">
+            <div class="sidebar">
+                <div class="sidebar-header">Portfolio Quick Access</div>
+                <div class="sidebar-item" data-window="about-window">
+                    <img src="Windows XP Icons/Speech.png" alt="About Me">
+                    <span>About Me</span>
+                </div>
+                <div class="sidebar-item" data-window="projects-window">
+                    <img src="Windows XP Icons/My Pictures.png" alt="Projects">
+                    <span>My Projects</span>
+                </div>
+                 <div class="sidebar-item" data-window="skills-window">
+                    <img src="Windows XP Icons/XPSP3RES Unknown 1.png" alt="Skills">
+                    <span>My Skills</span>
+                </div>
+                
+                <div class="sidebar-header">Connect With Me</div>
+                <a href="https://github.com/nick007116" target="_blank" class="sidebar-item" data-social="github">
+                    <span class="fa-icon"><i class="fab fa-github fa-github"></i></span>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/nikhil-urranki-2b6515255/" target="_blank" class="sidebar-item" data-social="linkedin">
+                    <span class="fa-icon"><i class="fab fa-linkedin-in fa-linkedin"></i></span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="mailto:nick007116@gmail.com" class="sidebar-item" data-social="gmail">
+                    <span class="fa-icon"><i class="fas fa-envelope fa-envelope"></i></span>
+                    <span>Email Me</span>
+                </a>
+            </div>
+            
+            <div class="main-content">
+                <div class="drive-container">
+                    <div class="drive-item" data-window="about-window">
+                        <img src="Windows XP Icons/Speech.png" alt="About Me">
+                        <div class="drive-name">About Me</div>
+                        <div class="drive-type">Personal Profile</div>
+                    </div>
+                    <div class="drive-item" data-window="projects-window">
+                        <img src="Windows XP Icons/My Pictures.png" alt="Projects">
+                        <div class="drive-name">My Projects</div>
+                        <div class="drive-type">Portfolio Gallery</div>
+                    </div>
+                    <div class="drive-item" data-window="skills-window">
+                        <img src="Windows XP Icons/XPSP3RES Unknown 1.png" alt="Skills">
+                        <div class="drive-name">My Skills</div>
+                        <div class="drive-type">Technologies</div>
+                    </div>
+                    <div class="drive-item" data-window="network-window">
+                        <img src="Windows XP Icons/Workgroup.png" alt="Network">
+                        <div class="drive-name">My Network</div>
+                        <div class="drive-type">Social Links</div>
+                    </div>
+                    <a href="resume.pdf" download class="drive-item" style="text-decoration: none; color: inherit;">
+                        <img src="Windows XP Icons/Removable Media.png" alt="Resume">
+                        <div class="drive-name">Resume (C:)</div>
+                        <div class="drive-type">Career Drive</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <span>5 items</span> <!-- Updated status bar text -->
+            <span>© Nikhil Urranki 2025</span> <!-- Updated name -->
+        </div>
+    </div>
+</body>
+</html>

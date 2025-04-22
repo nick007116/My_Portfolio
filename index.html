@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows XP Homepage</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+/* Enhanced Windows XP error dialog styling */
+.xp-error-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ECE9D8;
+    width: 340px;
+    z-index: 100000;
+    font-family: 'Tahoma', sans-serif;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #0054E3;
+    border-radius: 3px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.xp-error-header {
+    background: linear-gradient(to right, #0058E6 0%, #3A93FF 100%);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+
+.xp-error-header .title-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    user-select: none;
+}
+
+.xp-error-header .title-text img {
+    width: 16px;
+    height: 16px;
+}
+
+.xp-error-header .close-btn {
+    width: 21px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #F0F0F0 0%, #E3E3E3 100%);
+    border: 1px solid #7C7C7C;
+    border-radius: 3px;
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.xp-error-header .close-btn:hover {
+    background: linear-gradient(to bottom, #FFE8E8 0%, #FFC4C4 100%);
+    border-color: #BE4646;
+}
+
+.xp-error-header .close-btn:active {
+    background: #ECA4A4;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.xp-error-content {
+    padding: 14px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ECE9D8;
+    min-height: 60px;
+}
+
+.xp-error-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.xp-error-message {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #000;
+    max-width: 250px;
+}
+
+.xp-error-buttons {
+    padding: 14px 12px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    background: #ECE9D8;
+    border-top: 1px solid #C7C7C7;
+}
+
+.xp-error-button {
+    min-width: 75px;
+    height: 23px;
+    padding: 0 12px;
+    background: linear-gradient(to bottom, #FEFEFE 0%, #E6E6E6 50%, #E0E0E0 100%);
+    border: 1px solid #888888;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: 'Tahoma', sans-serif;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 1px rgba(255, 255, 255, 1);
+}
+
+.xp-error-button:hover {
+    background: linear-gradient(to bottom, #F7F7F7 0%, #E6E6E6 50%, #DEDEDE 100%);
+    border-color: #777777;
+}
+
+.xp-error-button:active {
+    background: #E0E0E0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+    border-color: #999999;
+}
+
+/* Add focus state for keyboard navigation */
+.xp-error-button:focus {
+    outline: 1px dotted #000;
+    outline-offset: -4px;
+}
+    
+    /* Desktop icon selection styles */
+    .desktop-icon {
+      position: relative;
+      cursor: default;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    
+    .desktop-icon.selected::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background-color: rgba(11, 97, 255, 0.4);
+      border: 1px dotted #fff;
+      z-index: -1;
+      border-radius: 3px;
+    }
+    
+    .desktop-icon:active span {
+      color: #e9e9e9;
+    }
+    
+    /* Start menu item hover styles */
+    .start-menu-item:hover {
+      background-color: #2D71E6;
+      color: white;
+      border-radius: 3px;
+    }
+    
+    .start-menu-item:hover .label,
+    .start-menu-item:hover .intent,
+    .start-menu-item:hover .program {
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="desktop-icons">
+    <div class="desktop-icon" id="my-computer" data-window="my-computer-window">
+      <img src="Windows XP Icons/My Computer.png" alt="My Computer">
+      <span>My Computer</span>
+    </div>
+    <div class="desktop-icon" id="projects" data-window="projects-window">
+      <img src="Windows XP Icons/My Pictures.png" alt="My Projects">
+      <span>My Projects</span>
+    </div>
+    <div class="desktop-icon" id="skills" data-window="skills-window">
+      <img src="Windows XP Icons/XPSP3RES Unknown 1.png" alt="My Skills">
+      <span>My Skills</span>
+    </div>
+  </div>
+
+  <div id="windows-container"></div>
+<template id="error-dialog-template">
+  <div class="xp-error-dialog">
+    <div class="xp-error-header">
+      <div class="title-text">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QsTDAwDuEyU2AAAAStJREFUOMuVkk1OwzAQhWfGTtKmSFAoiyJxgJ7ADXrE/mncACGQYNMfCZq0ie3hJy3QCjGblWe+92bG0h6Aoijwst0mWZZVUsoQdx3N88X5JwDAYDCAEOKlqqo3IsoGg0HYrJPJpEjTdAZgCKADYNO27XK5XL4DAO8VSymhlOq8990kSYb/AoQQYYwJfd9bY8ztCYDWelyW5Zsx5uHYxVlAXdcXALZSys+u6z7qur48SqC1nrVte+2c+zDGXK1Wq2UA0Fpf9X3/Zq29sScoioJEg+d5nq/X6/sdwL+klGKbTdOcRRoADIfD6Xa7zYlIRUB8KwgeAbgNW2PMXUEIHVNKESF6vJrBOUdCCBKRPOQWAAlABoAqpSr48R+cc/TCXILwiIgYgC8iWjDGPuNzvwGbXoTzcxG+WAAAAABJRU5ErkJggg==" alt="Windows">
+        <span>Windows</span>
+      </div>
+      <div class="close-btn">×</div>
+    </div>
+    <div class="xp-error-content">
+      <img src="data:image/png;base64,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" class="xp-error-icon" alt="Error">
+      <div class="xp-error-message">This feature is not available yet. Please try again in a future update.</div>
+    </div>
+    <div class="xp-error-buttons">
+      <button class="xp-error-button">OK</button>
+    </div>
+  </div>
+</template>
+  
+  <div class="taskbar" style="z-index: 999999999999;">
+    <div class="main-section">
+      <input id="start-menu-active" type="checkbox">
+      <div class="taskbar-footer">Date Display Here</div>
+
+      <label class="start-button" for="start-menu-active">
+        start
+      </label>
+
+      <div class="start-menu">
+        <div class="start-menu-header">
+          <div class="account-image-wrapper">
+          </div>
+          <h1 class="account-name">Urranki Nikhil</h1>
+        </div>
+        <div class="start-menu-body">
+          <div class="start-menu-favorites">
+            <div class="start-menu-item intent-item" data-window="about-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/Speech.png')">
+              </div>
+              <div class="label">
+                <div class="intent">About Me</div>
+                <div class="program">Personal Portfolio</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="start-menu-item favorite-item" data-window="projects-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/My Pictures.png')"></div>
+              <div class="label">My Projects</div>
+            </div>
+            <div class="start-menu-item favorite-item" data-window="skills-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/XPSP3RES Unknown 1.png')"></div>
+              <div class="label">My Skills</div>
+            </div>
+          </div>
+          <div class="start-menu-shortcuts">
+            <div class="start-menu-item my-item" data-window="my-computer-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/My Computer.png')">
+              </div>
+              <div class="label">My Computer</div>
+            </div>
+            
+            <div class="start-menu-item my-item">
+              <div class="icon" style="background-image:url('Windows XP Icons/Removable Media.png');"></div>
+              <div class="label">
+                <a href="resume.pdf" download="resume.pdf" style="text-decoration: none; color: inherit;">Resume</a>
+              </div>
+            </div>
+            <div class="start-menu-item my-item" data-window="projects-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/My Pictures.png')">
+              </div>
+              <div class="label">My Projects</div>
+            </div>
+            <div class="start-menu-item my-item not-available">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/My Music.png')">
+              </div>
+              <div class="label">My Playlist</div>
+            </div>
+            <div class="start-menu-item my-item" data-window="network-window">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/Workgroup.png')">
+              </div>
+              <div class="label">My Network</div>
+            </div>
+            <div class="divider"></div>
+
+            <div class="start-menu-item not-available">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/Print photos.png')">
+              </div>
+              <div class="label">Contact Form</div>
+            </div>
+            <div class="divider"></div>
+            <div class="start-menu-item not-available">
+              <div class="icon"
+                style="background-image:url('Windows XP Icons/Get Support.png')">
+              </div>
+              <div class="label">Help and Support</div>
+            </div>
+          </div>
+        </div>
+        <div class="start-menu-footer">
+          <span class="power-off"><img src="Windows XP Icons/Power.png"><label>power-off</label>
+          </span>
+        </div>
+
+      </div>
+      <div class="taskbar-opened" id="taskbar-opened"></div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Add error message functionality for unavailable features
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to show error dialog with authentic Windows XP styling
+      function showXpError(customMessage) {
+        // Clone the template
+        const errorDialog = document.getElementById('error-dialog-template').content.cloneNode(true);
+        document.body.appendChild(errorDialog);
+        
+        const dialog = document.querySelector('.xp-error-dialog');
+        const closeBtn = dialog.querySelector('.close-btn');
+        const okBtn = dialog.querySelector('.xp-error-button');
+        
+        if (customMessage) {
+          dialog.querySelector('.xp-error-message').textContent = customMessage;
+        }
+        
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        dialog.querySelector('.xp-error-header').addEventListener('mousedown', function(e) {
+          if (e.target !== closeBtn) {
+            isDragging = true;
+            offsetX = e.clientX - dialog.getBoundingClientRect().left;
+            offsetY = e.clientY - dialog.getBoundingClientRect().top;
+          }
+        });
+        
+        document.addEventListener('mousemove', moveDialog);
+        document.addEventListener('mouseup', stopDragging);
+        
+        function moveDialog(e) {
+          if (isDragging) {
+            dialog.style.left = (e.clientX - offsetX) + 'px';
+            dialog.style.top = (e.clientY - offsetY) + 'px';
+            dialog.style.transform = 'none'; // Remove the centering transform
+          }
+        }
+        
+        function stopDragging() {
+          isDragging = false;
+        }
+        
+        // Close dialog handlers
+        function closeDialog() {
+          dialog.remove();
+          document.removeEventListener('mousemove', moveDialog);
+          document.removeEventListener('mouseup', stopDragging);
+          document.removeEventListener('keydown', closeOnKey);
+        }
+        
+        closeBtn.addEventListener('click', closeDialog);
+        okBtn.addEventListener('click', closeDialog);
+        
+        // Add keyboard support - close on Enter or Escape key
+        function closeOnKey(e) {
+          if (e.key === 'Enter' || e.key === 'Escape') {
+            closeDialog();
+          }
+        }
+        
+        document.addEventListener('keydown', closeOnKey);
+        
+        // Focus the OK button for keyboard accessibility
+        okBtn.focus();
+        
+        // Play classic Windows error sound
+        const errorSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZSA0PVq3n77BdGAg+ltryxnMpBSl+zPLaizsIGGS57OihUBELTKXh8bllHgU2jdXzzn0vBSF1xe/glEILElyx6OyrWBUIQ5zd8sFuJAUuhM/z1YU2Bhxqvu7mnEoODlOq5O+zYBoGPJLY8shfAQFbw3jt4GAQEEOUB8TgYRIGMn8B5t9fBgRPmRLKy14EAVm9e/PkUAEBTrQQ0MZSAwFOow7OxFACAVbeY+O2ewYDRrgI8oZlDARqhxrrjGEFA2O5BV8GBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYG=');
+        errorSound.play();
+      }
+      
+      // Add click handlers to unavailable items
+      const unavailableItems = document.querySelectorAll('.not-available');
+      unavailableItems.forEach(item => {
+        item.addEventListener('click', function() {
+          showXpError("This feature is not available yet. Please try again in a future update.");
+        });
+      });
+      
+      // Add click handlers for desktop icons
+      const desktopIcons = document.querySelectorAll('.desktop-icon');
+      
+      // Track click timing for double-click
+      let lastClickTime = 0;
+      let clickedIcon = null;
+      
+      // Function to remove selection from all desktop icons
+      function clearIconSelection() {
+        desktopIcons.forEach(icon => {
+          icon.classList.remove('selected');
+        });
+      }
+      
+      // Function to open a window
+      function openWindow(windowId) {
+        let contentUrl, title;
+        
+        // Set up window parameters based on the icon clicked
+        switch(windowId) {
+          case 'my-computer-window':
+            contentUrl = 'my-computer.html';
+            title = 'My Computer';
+            break;
+          case 'projects-window':
+            contentUrl = 'projects.html';
+            title = 'My Projects';
+            break;
+          case 'skills-window':
+            contentUrl = 'skills.html';
+            title = 'My Skills';
+            break;
+          case 'about-window':
+            contentUrl = 'about.html';
+            title = 'About Me';
+            break;
+          case 'network-window':
+            contentUrl = 'network.html';
+            title = 'My Network';
+            break;
+        }
+        
+        // Post message to parent to open window
+        window.parent.postMessage({
+          action: 'openWindow',
+          windowId: windowId,
+          title: title,
+          contentUrl: contentUrl
+        }, '*');
+      }
+      
+      // Add double-click behavior to desktop icons
+      desktopIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          const currentTime = new Date().getTime();
+          const doubleClickThreshold = 500; // ms
+          
+          // First clear all selected icons if clicking a new icon
+          if (clickedIcon !== this) {
+            clearIconSelection();
+            clickedIcon = this;
+          }
+          
+          // Add selected class to this icon
+          this.classList.add('selected');
+          
+          // Check if it's a double-click
+          if (currentTime - lastClickTime < doubleClickThreshold) {
+            // It's a double-click - open the window
+            const windowId = this.getAttribute('data-window');
+            if (windowId) {
+              openWindow(windowId);
+            }
+          }
+          
+          lastClickTime = currentTime;
+        });
+      });
+      
+      // Add click handlers for Start Menu items (still single-click)
+      const startMenuItems = document.querySelectorAll('.start-menu-item:not(.not-available)');
+      startMenuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Get window ID from the data attribute
+          const windowId = this.getAttribute('data-window');
+          
+          // Close the start menu when an item is clicked
+          document.getElementById('start-menu-active').checked = false;
+          
+          // Check if we should open a window
+          if (windowId) {
+            openWindow(windowId);
+          }
+        });
+      });
+      
+      // Add click listener to document to clear icon selection
+      document.addEventListener('click', function(e) {
+        // If the click wasn't on a desktop icon, clear selection
+        if (!e.target.closest('.desktop-icon')) {
+          clearIconSelection();
+        }
+      });
+      
+      // Update the date/time in the taskbar
+      function updateClock() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+        
+        document.querySelector('.taskbar-footer').textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+      }
+      
+      updateClock();
+      setInterval(updateClock, 60000); // Update every minute
+    });
+  </script>
+</body>
+
+</html>

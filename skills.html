@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Skills</title>
+    <!-- Add Devicon library for tech icons with specific version for stability -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <!-- Add Font Awesome as fallback -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tahoma', sans-serif;
+            color: #000;
+            background-color: #ECE9D8;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .window-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ECE9D8;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: linear-gradient(to bottom, #7BA2E7 0%, #5885D2 100%);
+            border-bottom: 1px solid #3469C5;
+        }
+        
+        .header img {
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 16px;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #D8D2BD;
+            margin: 10px;
+            width: calc(100% - 10px); /* Ensure proper width accounting for margins */
+            position: relative;
+        }
+        
+        .skill-category {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #E3E3E3;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .category-header h2 {
+            color: #003399;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .category-header i {
+            width: 24px;
+            height: 24px;
+            font-size: 24px;
+            color: #003399;
+        }
+        
+        .skill-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-left: 34px;
+        }
+        
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        
+        .skill-item:hover {
+            background-color: #CCE8FF;
+            border: 1px solid #84ACDD;
+        }
+        
+        .skill-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .skill-icon i {
+            font-size: 20px;
+        }
+        
+        .skill-name {
+            font-size: 12px;
+            color: #000;
+        }
+        
+        .status-bar {
+            background: linear-gradient(to bottom, #ECE9D8 0%, #D6D2C2 100%);
+            border-top: 1px solid #a0a0a0;
+            padding: 1px 8px;
+            font-size: 10px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            color: #444;
+        }
+        
+        /* XP-like styling for devicon */
+        .colored {
+            color: #0046d5;
+        }
+        
+        /* Add additional fallback icon styles */
+        .fallback-icon {
+            height: 20px;
+            width: 20px;
+            object-fit: contain;
+        }
+        
+        /* Fix for Supabase icon specifically */
+        .supabase-icon {
+            background-image: url('https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo-icon.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
+        
+        /* Fix for skills page scrollbar */
+        .content-wrapper::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            right: 0;
+        }
+
+        .content-wrapper::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #DEDEDE;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #CFCFCF, #EFEFEF);
+            border: 1px solid #AAAAAA;
+            border-radius: 2px;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #C0C0C0, #DDDDDD);
+        }
+
+        .content-wrapper::-webkit-scrollbar-corner {
+            background: #F1F1F1;
+        }
+        
+        /* Additional responsive styles for skills page */
+        @media (max-width: 1200px) {
+            .skill-list {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .skill-list {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                margin-left: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .skill-list {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                margin-left: 10px;
+            }
+            
+            .category-header i {
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .skill-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 5px;
+                margin-left: 5px;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .category-header h2 {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+        
+        /* Maximize view specific adjustments */
+        .maximized .content-wrapper {
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        .maximized .skill-list {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+    </style>
+</head>
+<body>
+    <div class="window-content">
+        <div class="header">
+            <img src="Windows XP Icons/XPSP3RES Unknown 1.png" alt="My Skills">
+            <h1>My Skills</h1>
+        </div>
+        
+        <div class="content-wrapper">
+            <!-- Programming Languages Category -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-c-plain colored"></i>
+                    <h2>Programming Languages</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-c-plain colored"></i>
+                        </div>
+                        <div class="skill-name">C</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-java-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Java</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-python-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Python</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-javascript-plain colored"></i>
+                        </div>
+                        <div class="skill-name">JavaScript</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Frontend Category -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-html5-plain colored"></i>
+                    <h2>Frontend Technologies</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-html5-plain colored"></i>
+                        </div>
+                        <div class="skill-name">HTML</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-css3-plain colored"></i>
+                        </div>
+                        <div class="skill-name">CSS</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-javascript-plain colored"></i>
+                        </div>
+                        <div class="skill-name">JavaScript</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-react-original colored"></i>
+                        </div>
+                        <div class="skill-name">React</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-nextjs-original colored"></i>
+                        </div>
+                        <div class="skill-name">Next.js</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-tailwindcss-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Tailwind CSS</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-flutter-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Flutter</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Backend Category -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-nodejs-plain colored"></i>
+                    <h2>Backend Technologies</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-nodejs-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Node.js</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-flask-original colored"></i>
+                        </div>
+                        <div class="skill-name">Flask</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Database Category -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-mongodb-plain colored"></i>
+                    <h2>Databases</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-mongodb-plain colored"></i>
+                        </div>
+                        <div class="skill-name">MongoDB</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-mysql-plain colored"></i>
+                        </div>
+                        <div class="skill-name">MySQL</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-postgresql-plain colored"></i>
+                        </div>
+                        <div class="skill-name">PostgreSQL</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-firebase-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Firebase</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <!-- Primary option: Devicon -->
+                            <i class="devicon-supabase-plain colored" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"></i>
+                            
+                            <!-- Fallback 1: Direct SVG -->
+                            <span class="supabase-icon" style="display:none;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"></span>
+                            
+                            <!-- Fallback 2: Font Awesome database icon -->
+                            <i class="fas fa-database" style="display:none; color:#3ECF8E;"></i>
+                        </div>
+                        <div class="skill-name">Supabase</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Operating Systems & Tools -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-linux-plain colored"></i>
+                    <h2>Operating Systems & Tools</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-linux-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Linux</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-git-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Git</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-github-original colored"></i>
+                        </div>
+                        <div class="skill-name">GitHub</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cloud & DevOps Category -->
+            <div class="skill-category">
+                <div class="category-header">
+                    <i class="devicon-amazonwebservices-original colored"></i>
+                    <h2>Cloud & DevOps</h2>
+                </div>
+                
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-amazonwebservices-original colored"></i>
+                        </div>
+                        <div class="skill-name">AWS</div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="devicon-googlecloud-plain colored"></i>
+                        </div>
+                        <div class="skill-name">Google Cloud Platform</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <span>25 skills displayed</span>
+        </div>
+    </div>
+
+    <!-- Script to ensure icons load properly -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Devicons loaded properly
+            setTimeout(function() {
+                const deviconElements = document.querySelectorAll('.devicon-supabase-plain');
+                deviconElements.forEach(icon => {
+                    // Check if the icon rendered with width (indicating it loaded)
+                    if (getComputedStyle(icon).width === '0px') {
+                        // Icon didn't load, show fallback
+                        icon.style.display = 'none';
+                        const fallback = icon.parentElement.querySelector('.supabase-icon');
+                        if (fallback) fallback.style.display = 'inline-block';
+                    }
+                });
+            }, 500);
+            
+            // Local fallback for all icons
+            document.querySelectorAll('.skill-icon i').forEach(icon => {
+                icon.addEventListener('error', function() {
+                    // If icon fails, replace with generic icon
+                    this.className = 'fas fa-code colored';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

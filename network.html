@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Network</title>
+    <!-- Import Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tahoma', sans-serif;
+            color: #000;
+            background-color: #ECE9D8;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .window-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ECE9D8;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: linear-gradient(to bottom, #7BA2E7 0%, #5885D2 100%);
+            border-bottom: 1px solid #3469C5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .header img {
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 16px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            overflow: auto;
+            background-color: #ECE9D8;
+            padding: 15px;
+        }
+        
+        /* Windows XP style scrollbars for content-wrapper */
+        .content-wrapper::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+
+        .content-wrapper::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #DEDEDE;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(to right, #CFCFCF, #EFEFEF);
+            border: 1px solid #AAAAAA;
+            border-radius: 2px;
+        }
+
+        .content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to right, #C0C0C0, #DDDDDD);
+        }
+
+        .content-wrapper::-webkit-scrollbar-corner {
+            background: #F1F1F1;
+        }
+        
+        .content {
+            line-height: 1.6;
+            font-size: 12px;
+            padding: 15px 20px;
+            background-color: white;
+            border: 1px solid #D8D2BD;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #E3E3E3;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .section-with-icon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            color: #003399;
+            font-size: 20px;
+        }
+        
+        h2 {
+            color: #003399;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #C5D8F1;
+        }
+        
+        .network-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        
+        .network-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border: 1px solid #D8D2BD;
+            border-radius: 3px;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #F9F9F9 0%, #F3F3F3 100%);
+        }
+        
+        .network-item:hover {
+            background: linear-gradient(to bottom, #EBF4FD 0%, #DCE9FB 100%);
+            border-color: #B8D6FB;
+        }
+        
+        .network-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            background-color: #f8f8f8;
+            color: #333;
+            font-size: 20px;
+        }
+        
+        .github {
+            color: #333;
+        }
+        
+        .linkedin {
+            color: #0077b5;
+        }
+        
+        .twitter {
+            color: #1DA1F2;
+        }
+        
+        .instagram {
+            color: #E1306C;
+        }
+        
+        .gmail {
+            color: #D44638;
+        }
+        
+        .phone {
+            color: #4CAF50;
+        }
+        
+        .network-info {
+            flex-grow: 1;
+        }
+        
+        .network-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #003399;
+            margin-bottom: 3px;
+        }
+        
+        .network-handle {
+            font-size: 11px;
+            color: #555;
+        }
+        
+        .network-connect {
+            font-size: 10px;
+            margin-top: 3px;
+            color: #0046D5;
+            text-decoration: underline;
+        }
+        
+        .status-bar {
+            background: linear-gradient(to bottom, #ECE9D8 0%, #D6D2C2 100%);
+            border-top: 1px solid #a0a0a0;
+            padding: 1px 8px;
+            font-size: 10px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            color: #444;
+        }
+        
+        /* Additional responsive styles for network page */
+        @media (max-width: 1200px) {
+            .network-list {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .network-list {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .network-list {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .network-name {
+                font-size: 12px;
+            }
+            
+            .network-handle {
+                font-size: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .network-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-with-icon {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .section-icon {
+                margin-bottom: 5px;
+            }
+        }
+        
+        /* Maximize view specific adjustments */
+        .maximized .content-wrapper {
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        .maximized .network-list {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    </style>
+</head>
+<body>
+    <div class="window-content">
+        <div class="header">
+            <img src="Windows XP Icons/Workgroup.png" alt="My Network">
+            <h1>My Network Places</h1>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="section">
+                    <div class="section-with-icon">
+                        <i class="fas fa-globe section-icon"></i>
+                        <h2>Connect With Me</h2>
+                    </div>
+                    <p>Feel free to reach out through any of these platforms. I'm always open to new connections, collaborations, and opportunities.</p>
+                
+                    <div class="network-list">
+                        <div class="network-item" onclick="window.open('https://github.com/nick007116', '_blank')">
+                            <div class="network-icon">
+                                <i class="fab fa-github github"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">GitHub</div>
+                                <div class="network-handle">@nick007116</div>
+                                <div class="network-connect">View my code</div>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item" onclick="window.open('https://www.linkedin.com/in/nikhil-urranki-2b6515255/', '_blank')">
+                            <div class="network-icon">
+                                <i class="fab fa-linkedin-in linkedin"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">LinkedIn</div>
+                                <div class="network-handle">Urranki Nikhil</div>
+                                <div class="network-connect">Professional profile</div>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item" onclick="window.open('https://x.com/Nikhil007116', '_blank')">
+                            <div class="network-icon">
+                                <i class="fab fa-twitter twitter"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Twitter</div>
+                                <div class="network-handle">@Nikhil007116</div>
+                                <div class="network-connect">Follow me</div>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item" onclick="window.open('https://www.instagram.com/__urranki_nikhil__/', '_blank')">
+                            <div class="network-icon">
+                                <i class="fab fa-instagram instagram"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Instagram</div>
+                                <div class="network-handle">@__urranki_nikhil__</div>
+                                <div class="network-connect">View photos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item" onclick="window.location.href='mailto:nick007116@gmail.com'">
+                            <div class="network-icon">
+                                <i class="fas fa-envelope gmail"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Email</div>
+                                <div class="network-handle">nick007116@gmail.com</div>
+                                <div class="network-connect">Send message</div>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item" onclick="window.location.href='tel:+918919551032'">
+                            <div class="network-icon">
+                                <i class="fas fa-phone-alt phone"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Phone</div>
+                                <div class="network-handle">+91 8919551032</div>
+                                <div class="network-connect">Call me</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-with-icon">
+                        <i class="fas fa-handshake section-icon"></i>
+                        <h2>Let's Collaborate</h2>
+                    </div>
+                    <p>I'm always interested in working on exciting projects with passionate people. If you have an idea or opportunity, don't hesitate to reach out!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <span>6 network connections</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const networkItems = document.querySelectorAll('.network-item');
+            
+            networkItems.forEach(item => {
+                item.addEventListener('mousedown', function() {
+                    this.style.boxShadow = 'inset 1px 1px 3px rgba(0,0,0,0.2)';
+                    this.style.transform = 'translateY(1px)';
+                });
+                
+                item.addEventListener('mouseup', function() {
+                    this.style.boxShadow = '';
+                    this.style.transform = '';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '';
+                    this.style.transform = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
