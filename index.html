@@ -700,6 +700,37 @@
       // Add click handler to the power-off element
       powerOffElement.addEventListener('click', showShutdownPopup);
 
+      // Add resume download handler - make the entire box clickable
+      const resumeMenuItem = document.querySelector('.start-menu-item.my-item a[download="resume.pdf"]').closest('.start-menu-item');
+      if (resumeMenuItem) {
+        resumeMenuItem.addEventListener('click', function(e) {
+          // Prevent default navigation if clicking on the link
+          if (e.target.tagName === 'A') {
+            e.preventDefault();
+          }
+          
+          // Create a temporary anchor element
+          const downloadLink = document.createElement('a');
+          downloadLink.href = 'resume.pdf';
+          downloadLink.download = 'resume.pdf';
+          downloadLink.style.display = 'none';
+          
+          // Add to document, trigger click, then remove
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          
+          // Clean up
+          setTimeout(() => {
+            document.body.removeChild(downloadLink);
+            
+            // Close the start menu after download is initiated
+            document.getElementById('start-menu-active').checked = false;
+          }, 100);
+        });
+        
+        // Add pointer cursor to show it's clickable
+        resumeMenuItem.style.cursor = 'pointer';
+      }
       
        updateClock();
       setInterval(updateClock, 60000); // Update every minute
